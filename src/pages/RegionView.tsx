@@ -32,7 +32,7 @@ export default function RegionView() {
         meta={
           <>
             <span className="flex items-center gap-1.5">
-              Intrapreneur couple <LeaderChip acr={view.leaders[0]} /> <LeaderChip acr={view.leaders[1]} />
+              Intrapreneurs <LeaderChip acr={view.leaders[0]} /> <LeaderChip acr={view.leaders[1]} />
             </span>
             <span className="text-slate-300">|</span>
             <span>{view.spCount} service points</span>

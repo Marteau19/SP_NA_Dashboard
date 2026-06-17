@@ -10,6 +10,10 @@ import {
   Gauge,
   TrendingUp,
   ClipboardList,
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
 } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { regions } from "../data/seedData";
@@ -77,6 +81,16 @@ export default function ServicePointScorecard() {
           </div>
         }
       />
+
+      {/* Contact (mock) */}
+      <Card className="mb-6 p-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <ContactItem icon={<Phone size={16} />} label="Phone" value={sp.contact.phone} href={`tel:${sp.contact.phone.replace(/[^\d]/g, "")}`} />
+          <ContactItem icon={<Mail size={16} />} label="Email" value={sp.contact.email} href={`mailto:${sp.contact.email}`} />
+          <ContactItem icon={<MapPin size={16} />} label="Address" value={sp.contact.address} />
+          <ContactItem icon={<Clock size={16} />} label="Hours" value={sp.contact.hours} />
+        </div>
+      </Card>
 
       {/* Revenue streams */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -237,6 +251,32 @@ function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; va
     <div className="rounded-lg bg-slate-50 p-3">
       <p className="flex items-center gap-1.5 text-xs text-slate-500">{icon} {label}</p>
       <p className="mt-0.5 font-bold text-navy">{value}</p>
+    </div>
+  );
+}
+
+function ContactItem({
+  icon,
+  label,
+  value,
+  href,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  href?: string;
+}) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-navy/5 text-navy">{icon}</span>
+      <div className="min-w-0">
+        <p className="text-[11px] uppercase tracking-wide text-slate-400">{label}</p>
+        {href ? (
+          <a href={href} className="block truncate text-sm font-semibold text-navy hover:text-ecoflo">{value}</a>
+        ) : (
+          <p className="truncate text-sm font-semibold text-navy" title={value}>{value}</p>
+        )}
+      </div>
     </div>
   );
 }

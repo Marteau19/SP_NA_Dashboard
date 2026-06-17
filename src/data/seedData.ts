@@ -59,6 +59,13 @@ export interface InventoryItem {
   status: StockStatus;
 }
 
+export interface Contact {
+  phone: string;
+  email: string;
+  address: string;
+  hours: string;
+}
+
 export interface ServicePoint {
   id: string;
   name: string;
@@ -77,6 +84,7 @@ export interface ServicePoint {
   reviews: Reviews;
   cases: Cases;
   inventory: InventoryItem[];
+  contact: Contact;
 }
 
 export interface RegionRollup {
@@ -147,6 +155,18 @@ const REVIEW_DATES = ["2026-05-02", "2026-05-14", "2026-05-21", "2026-06-03", "2
 const HISTORY_LABELS = ["FY25 Q3", "FY25 Q4", "FY26 Q1", "FY26 Q2", "FY26 Q3", "FY26 Q4"];
 
 const INVENTORY_ITEMS = ["Ecoflo systems", "Filter media (FMR)", "Pump assemblies", "Control panels", "Spare parts kits"];
+
+// Mock contact details. Area codes are loosely grouped by region; nothing here
+// is a real phone, address, or mailbox.
+const STREET_POOL = [
+  "Industrial Pkwy", "Riverside Rd", "Maple Ave", "Cedar Way", "Lakeshore Blvd",
+  "Confederation Dr", "Birchwood St", "Sunrise Ave", "Greenfield Cres", "Harbour Rd",
+];
+const AREA_CODES: Record<RegionGroup, string[]> = {
+  QC: ["514", "418", "819", "450"],
+  "CAN-EN": ["905", "604", "902", "613"],
+  USA: ["515", "609", "717"],
+};
 
 // Deterministic PRNG so the prototype is stable across reloads.
 function mulberry32(a: number): () => number {
@@ -254,6 +274,15 @@ function buildServicePoint(def: RegionDef, idx: number): ServicePoint {
     return { item, onHand, reserved, reorderPoint, status };
   });
 
+  // Generated last so the figures above stay stable across data changes.
+  const areaCode = pick(AREA_CODES[def.group]);
+  const contact: Contact = {
+    phone: `(${areaCode}) ${rint(200, 989)}-${String(rint(0, 9999)).padStart(4, "0")}`,
+    email: `${def.id}.sp${idx + 1}@ptwe-mock.com`,
+    address: `${rint(50, 4999)} ${pick(STREET_POOL)}, ${def.name}`,
+    hours: "Mon to Fri, 8am to 5pm",
+  };
+
   return {
     id,
     name: `${def.name} SP${idx + 1}`,
@@ -267,6 +296,7 @@ function buildServicePoint(def: RegionDef, idx: number): ServicePoint {
     reviews,
     cases,
     inventory,
+    contact,
   };
 }
 
