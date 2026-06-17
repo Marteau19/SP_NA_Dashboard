@@ -5,7 +5,8 @@ import { useApp } from "../context/AppContext";
 import { regions } from "../data/seedData";
 import { buildRegionView, GROUP_LABELS, SERVICE_TARGET } from "../lib/derive";
 import { money, pct } from "../lib/format";
-import { Card, KpiCard, PageHeader, RagBadge, RagDot, LeaderChip, Progress } from "../components/common/ui";
+import { Card, KpiCard, PageHeader, RagBadge, RagDot, LeaderChip, Progress, SectionTitle } from "../components/common/ui";
+import { RegionMap } from "../components/RegionMap";
 
 export default function RegionView() {
   const { regionId } = useParams();
@@ -49,13 +50,20 @@ export default function RegionView() {
         <KpiCard label="Avg $/km" value={`$${view.avgRevPerKm.toFixed(1)}`} icon={<Route size={16} />} />
       </div>
 
-      <h2 className="mb-3 mt-6 text-lg font-bold text-navy">Service points</h2>
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-        {view.spViews
-          .slice()
-          .sort((a, b) => b.revenue - a.revenue)
-          .map((sp) => (
-            <Card key={sp.id} onClick={() => navigate(`/sp/${sp.id}`)} className="p-4">
+      <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
+        <Card className="p-5">
+          <SectionTitle title="Coverage map" subtitle="Service points and their approximate 100km service areas" />
+          <RegionMap region={region} spViews={view.spViews} onSelect={(id) => navigate(`/sp/${id}`)} />
+        </Card>
+
+        <div>
+          <h2 className="mb-3 text-lg font-bold text-navy">Service points</h2>
+          <div className="grid grid-cols-1 gap-3">
+            {view.spViews
+              .slice()
+              .sort((a, b) => b.revenue - a.revenue)
+              .map((sp) => (
+                <Card key={sp.id} onClick={() => navigate(`/sp/${sp.id}`)} className="p-4">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2.5">
                   <RagDot rag={sp.mixRag} />
@@ -76,8 +84,10 @@ export default function RegionView() {
               <div className="mt-3">
                 <Progress value={(sp.servicePct / SERVICE_TARGET) * 100} rag={sp.mixRag} />
               </div>
-            </Card>
-          ))}
+                </Card>
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );

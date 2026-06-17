@@ -120,7 +120,7 @@ const REGION_DEFS: RegionDef[] = [
   { id: "est-chaudiere", name: "Est-Chaudiere-Appalaches", group: "QC", currency: "CAD", coords: [46.6, -70.7], leaders: ["AMRM", "DESM10"], spCount: 2 },
   { id: "ontario", name: "Ontario", group: "CAN-EN", currency: "CAD", coords: [43.7, -79.4], leaders: ["MORS11", "BOLM"], spCount: 3 },
   { id: "east", name: "East", group: "CAN-EN", currency: "CAD", coords: [45.0, -63.0], leaders: ["DUPA", "MARC18"], spCount: 1 },
-  { id: "west", name: "West", group: "CAN-EN", currency: "CAD", coords: [51.0, -114.0], leaders: ["TREA8", "GILJ"], spCount: 1 },
+  { id: "west", name: "West", group: "CAN-EN", currency: "CAD", coords: [49.3, -124.0], leaders: ["TREA8", "GILJ"], spCount: 1 },
   { id: "iowa", name: "Iowa", group: "USA", currency: "USD", coords: [41.9, -93.6], leaders: ["GENP", "DVOK"], spCount: 2 },
   { id: "new-jersey", name: "New Jersey", group: "USA", currency: "USD", coords: [40.2, -74.7], leaders: ["CHAJ11", "LAFS4"], spCount: 1 },
   { id: "pennsylvania", name: "Pennsylvania", group: "USA", currency: "USD", coords: [40.9, -77.8], leaders: ["TREB", "MORG7"], spCount: 5 },
