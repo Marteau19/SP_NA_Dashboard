@@ -43,7 +43,7 @@ export default function NetworkOverview() {
     <div>
       <PageHeader
         eyebrow="Network Overview"
-        title="North American Service Point Network"
+        title="North-America - Service Point Network"
         meta={
           <>
             <span>As of {PERIODS[filters.periodIndex]}</span>
