@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Gauge, Route, TrendingUp, ClipboardList, Navigation } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { allSpViews, allRegionViews } from "../lib/derive";
 import { pct, num } from "../lib/format";
@@ -38,12 +37,12 @@ export default function FieldEfficiency() {
       />
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-        <KpiCard label="Network avg $/km" value={`$${avgKm.toFixed(1)}`} icon={<Gauge size={16} />} />
-        <KpiCard label="Best SP" value={`$${best ? best.revenuePerKm.toFixed(1) : "0"}`} sub={best?.name} icon={<TrendingUp size={16} />} />
-        <KpiCard label="Avg route score" value={`${avgRoute.toFixed(0)}/100`} icon={<Navigation size={16} />} />
-        <KpiCard label="Avg upsell rate" value={pct(avgUpsell * 100, 0)} icon={<TrendingUp size={16} />} />
-        <KpiCard label="Avg jobs / route" value={avgJobs.toFixed(1)} icon={<ClipboardList size={16} />} />
-        <KpiCard label="Total km driven" value={num(totalKm)} icon={<Route size={16} />} />
+        <KpiCard label="Network avg $/km" value={`$${avgKm.toFixed(1)}`} />
+        <KpiCard label="Best SP" value={`$${best ? best.revenuePerKm.toFixed(1) : "0"}`} sub={best?.name} />
+        <KpiCard label="Avg route score" value={`${avgRoute.toFixed(0)}/100`} />
+        <KpiCard label="Avg upsell rate" value={pct(avgUpsell * 100, 0)} />
+        <KpiCard label="Avg jobs / route" value={avgJobs.toFixed(1)} />
+        <KpiCard label="Total km driven" value={num(totalKm)} />
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -62,7 +61,7 @@ export default function FieldEfficiency() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
+              <tr className="text-left text-xs uppercase tracking-wide text-stone-400">
                 <th className="pb-2 font-medium">Service point</th>
                 <th className="pb-2 text-right font-medium">$/km</th>
                 <th className="pb-2 text-right font-medium">Route score</th>
@@ -76,14 +75,14 @@ export default function FieldEfficiency() {
                 <tr
                   key={v.id}
                   onClick={() => navigate(`/sp/${v.id}`)}
-                  className="cursor-pointer border-t border-slate-100 hover:bg-slate-50"
+                  className="cursor-pointer border-t border-stone-100 hover:bg-stone-50"
                 >
                   <td className="py-2 font-medium text-navy">{v.name}</td>
                   <td className="py-2 text-right font-semibold text-navy">${v.revenuePerKm.toFixed(1)}</td>
-                  <td className="py-2 text-right text-slate-600">{v.routeScore}</td>
-                  <td className="py-2 text-right text-slate-600">{pct(v.upsellRate * 100, 0)}</td>
-                  <td className="py-2 text-right text-slate-600">{v.jobsPerRoute.toFixed(1)}</td>
-                  <td className="py-2 text-right text-slate-600">{num(v.kmDriven)}</td>
+                  <td className="py-2 text-right text-stone-600">{v.routeScore}</td>
+                  <td className="py-2 text-right text-stone-600">{pct(v.upsellRate * 100, 0)}</td>
+                  <td className="py-2 text-right text-stone-600">{v.jobsPerRoute.toFixed(1)}</td>
+                  <td className="py-2 text-right text-stone-600">{num(v.kmDriven)}</td>
                 </tr>
               ))}
             </tbody>

@@ -32,26 +32,17 @@ function fmt(key: MetricKey, v: number): string {
   return num(Math.round(v));
 }
 
-// Red -> amber -> green scale; higher is always better here.
+// Monochrome navy-intensity ramp; stronger values read darker. Keeps the
+// heatmap on-palette (no multi-color), in the spirit of Linear / Vercel.
+const HEAT_LO = [245, 244, 242]; // warm near-white
+const HEAT_HI = [4, 30, 66]; // navy
 function heatColor(t: number): string {
-  const stops = [
-    { p: 0, c: [209, 67, 67] },
-    { p: 0.5, c: [224, 161, 6] },
-    { p: 1, c: [100, 167, 11] },
-  ];
-  let a = stops[0];
-  let b = stops[stops.length - 1];
-  for (let i = 0; i < stops.length - 1; i++) {
-    if (t >= stops[i].p && t <= stops[i + 1].p) {
-      a = stops[i];
-      b = stops[i + 1];
-      break;
-    }
-  }
-  const span = b.p - a.p || 1;
-  const k = (t - a.p) / span;
-  const ch = (i: number) => Math.round(a.c[i] + (b.c[i] - a.c[i]) * k);
-  return `rgba(${ch(0)}, ${ch(1)}, ${ch(2)}, 0.85)`;
+  const ch = (i: number) => Math.round(HEAT_LO[i] + (HEAT_HI[i] - HEAT_LO[i]) * t);
+  return `rgb(${ch(0)}, ${ch(1)}, ${ch(2)})`;
+}
+// White text once the cell is dark enough to need it.
+function heatText(t: number): string {
+  return t > 0.5 ? "#ffffff" : "#041e42";
 }
 
 export default function Benchmarking() {
@@ -129,23 +120,23 @@ export default function Benchmarking() {
         title="Compare across the network"
         meta={<span>Rank and compare {level === "sp" ? "service points" : "regions"} on the metric that matters.</span>}
         action={
-          <button onClick={exportCsv} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-navy shadow-sm hover:bg-slate-50">
+          <button onClick={exportCsv} className="flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-navy shadow-sm hover:bg-stone-50">
             <Download size={16} /> Export CSV
           </button>
         }
       />
 
       <div className="mb-5 flex flex-wrap items-center gap-3">
-        <div className="flex overflow-hidden rounded-lg border border-slate-200 text-sm font-medium">
+        <div className="flex overflow-hidden rounded-lg border border-stone-200 text-sm font-medium">
           {(["sp", "region"] as Level[]).map((l) => (
-            <button key={l} onClick={() => setLevel(l)} className={`px-4 py-2 ${level === l ? "bg-navy text-white" : "bg-white text-slate-500 hover:bg-slate-50"}`}>
+            <button key={l} onClick={() => setLevel(l)} className={`px-4 py-2 ${level === l ? "bg-navy text-white" : "bg-white text-stone-500 hover:bg-stone-50"}`}>
               {l === "sp" ? "Service points" : "Regions"}
             </button>
           ))}
         </div>
-        <div className="flex overflow-hidden rounded-lg border border-slate-200 text-sm font-medium">
+        <div className="flex overflow-hidden rounded-lg border border-stone-200 text-sm font-medium">
           {METRICS.map((m) => (
-            <button key={m.key} onClick={() => setMetric(m.key)} className={`px-4 py-2 ${metric === m.key ? "bg-ecoflo text-white" : "bg-white text-slate-500 hover:bg-slate-50"}`}>
+            <button key={m.key} onClick={() => setMetric(m.key)} className={`px-4 py-2 ${metric === m.key ? "bg-ecoflo text-white" : "bg-white text-stone-500 hover:bg-stone-50"}`}>
               {m.label}
             </button>
           ))}
@@ -159,14 +150,14 @@ export default function Benchmarking() {
         </Card>
 
         <Card className="p-5">
-          <SectionTitle title="Performance heatmap" subtitle="Each cell shaded relative to the network (greener is stronger)" />
+          <SectionTitle title="Performance heatmap" subtitle="Each cell shaded relative to the network (darker is stronger)" />
           <div className="overflow-x-auto">
             <table className="w-full border-separate border-spacing-1 text-sm">
               <thead>
                 <tr>
-                  <th className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wide text-slate-400">{level === "sp" ? "Service point" : "Region"}</th>
+                  <th className="px-2 py-1 text-left text-xs font-medium uppercase tracking-wide text-stone-400">{level === "sp" ? "Service point" : "Region"}</th>
                   {METRICS.map((m) => (
-                    <th key={m.key} className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wide text-slate-400">{m.label}</th>
+                    <th key={m.key} className="px-2 py-1 text-center text-xs font-medium uppercase tracking-wide text-stone-400">{m.label}</th>
                   ))}
                 </tr>
               </thead>
@@ -177,8 +168,11 @@ export default function Benchmarking() {
                     {METRICS.map((m) => (
                       <td
                         key={m.key}
-                        className="rounded px-2 py-1.5 text-center text-xs font-semibold text-white"
-                        style={{ background: heatColor(norm(m.key, e.values[m.key])) }}
+                        className="rounded px-2 py-1.5 text-center text-xs font-semibold tabular-nums"
+                        style={{
+                          background: heatColor(norm(m.key, e.values[m.key])),
+                          color: heatText(norm(m.key, e.values[m.key])),
+                        }}
                         title={`${e.name} - ${m.label}: ${fmt(m.key, e.values[m.key])}`}
                       >
                         {fmt(m.key, e.values[m.key])}

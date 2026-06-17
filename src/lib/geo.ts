@@ -59,3 +59,28 @@ export function circlePolygon(
   }
   return { type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [coords] } };
 }
+
+// Computes a geoMercator center [lng, lat] and base scale that frames the
+// given marker coords (each [lat, lng]) inside a width x height viewport at
+// zoom 1, with padding. Nothing is hardcoded; it derives from the data.
+export function fitMercator(
+  coords: [number, number][],
+  width: number,
+  height: number,
+  pad = 0.82
+): { center: [number, number]; scale: number } {
+  const R = Math.PI / 180;
+  const lngs = coords.map((c) => c[1]);
+  const lats = coords.map((c) => c[0]);
+  const minLng = Math.min(...lngs);
+  const maxLng = Math.max(...lngs);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const center: [number, number] = [(minLng + maxLng) / 2, (minLat + maxLat) / 2];
+  const spanLng = Math.max(maxLng - minLng, 0.5);
+  const spanLat = Math.max(maxLat - minLat, 0.5);
+  const cosLat = Math.cos(center[1] * R) || 1;
+  const scaleX = (width * pad) / (spanLng * R);
+  const scaleY = (height * pad * cosLat) / (spanLat * R);
+  return { center, scale: Math.min(scaleX, scaleY) };
+}

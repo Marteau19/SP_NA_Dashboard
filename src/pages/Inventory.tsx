@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Boxes, PackageX, AlertTriangle, CheckCircle2, Download } from "lucide-react";
+import { Download } from "lucide-react";
 import { useApp } from "../context/AppContext";
 import { allSpViews } from "../lib/derive";
 import { num } from "../lib/format";
@@ -62,17 +62,17 @@ export default function Inventory() {
         title="Stock across the service point network"
         meta={<span>On-hand, reserved and reorder levels by item type.</span>}
         action={
-          <button onClick={exportCsv} className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-navy shadow-sm hover:bg-slate-50">
+          <button onClick={exportCsv} className="flex items-center gap-2 rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm font-semibold text-navy shadow-sm hover:bg-stone-50">
             <Download size={16} /> Export CSV
           </button>
         }
       />
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <KpiCard label="Items tracked" value={num(rows.length)} icon={<Boxes size={16} />} />
-        <KpiCard label="Out of stock" value={num(out)} accent="red" icon={<PackageX size={16} />} />
-        <KpiCard label="Low stock" value={num(low)} accent="amber" icon={<AlertTriangle size={16} />} />
-        <KpiCard label="In stock" value={num(ok)} accent="green" icon={<CheckCircle2 size={16} />} />
+        <KpiCard label="Items tracked" value={num(rows.length)} />
+        <KpiCard label="Out of stock" value={num(out)} />
+        <KpiCard label="Low stock" value={num(low)} />
+        <KpiCard label="In stock" value={num(ok)} />
       </div>
 
       <Card className="mt-6 p-5">
@@ -80,8 +80,8 @@ export default function Inventory() {
           title="Stock detail"
           subtitle={`${sorted.length} rows`}
           action={
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-600">
-              <input type="checkbox" checked={issuesOnly} onChange={(e) => setIssuesOnly(e.target.checked)} className="h-4 w-4 rounded border-slate-300 text-ecoflo focus:ring-ecoflo" />
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-stone-600">
+              <input type="checkbox" checked={issuesOnly} onChange={(e) => setIssuesOnly(e.target.checked)} className="h-4 w-4 rounded border-stone-300 text-ecoflo focus:ring-ecoflo" />
               Issues only
             </label>
           }
@@ -89,7 +89,7 @@ export default function Inventory() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-slate-400">
+              <tr className="text-left text-xs uppercase tracking-wide text-stone-400">
                 <th className="pb-2 font-medium">Service point</th>
                 <th className="pb-2 font-medium">Region</th>
                 <th className="pb-2 font-medium">Item</th>
@@ -101,13 +101,13 @@ export default function Inventory() {
             </thead>
             <tbody>
               {sorted.map((r, i) => (
-                <tr key={i} onClick={() => navigate(`/sp/${r.spId}`)} className="cursor-pointer border-t border-slate-100 hover:bg-slate-50">
+                <tr key={i} onClick={() => navigate(`/sp/${r.spId}`)} className="cursor-pointer border-t border-stone-100 hover:bg-stone-50">
                   <td className="py-2 font-medium text-navy">{r.spName}</td>
-                  <td className="py-2 text-slate-500">{r.region}</td>
-                  <td className="py-2 text-slate-600">{r.item}</td>
-                  <td className="py-2 text-right text-slate-600">{r.onHand}</td>
-                  <td className="py-2 text-right text-slate-600">{r.reserved}</td>
-                  <td className="py-2 text-right text-slate-600">{r.reorderPoint}</td>
+                  <td className="py-2 text-stone-500">{r.region}</td>
+                  <td className="py-2 text-stone-600">{r.item}</td>
+                  <td className="py-2 text-right text-stone-600">{r.onHand}</td>
+                  <td className="py-2 text-right text-stone-600">{r.reserved}</td>
+                  <td className="py-2 text-right text-stone-600">{r.reorderPoint}</td>
                   <td className="py-2 text-right"><StatusPill status={r.status} /></td>
                 </tr>
               ))}

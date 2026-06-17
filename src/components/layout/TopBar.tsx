@@ -25,7 +25,7 @@ function Select<T extends string>({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
-        className="appearance-none rounded-lg border border-slate-200 bg-white py-2 pl-3 pr-8 text-sm font-medium text-navy shadow-sm focus:border-ecoflo focus:outline-none focus:ring-1 focus:ring-ecoflo"
+        className="appearance-none rounded-lg border border-stone-200 bg-white py-2 pl-3 pr-8 text-sm font-medium text-navy shadow-sm focus:border-ecoflo focus:outline-none focus:ring-1 focus:ring-ecoflo"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>
@@ -33,7 +33,7 @@ function Select<T extends string>({
           </option>
         ))}
       </select>
-      <ChevronDown size={15} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+      <ChevronDown size={15} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400" />
     </div>
   );
 }
@@ -42,7 +42,7 @@ export function TopBar({ onOpenAlerts, alertCount }: { onOpenAlerts: () => void;
   const { group, setGroup, periodIndex, setPeriodIndex, currency, setCurrency, setPresentation } = useApp();
 
   return (
-    <header className="sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white/90 px-6 py-3 backdrop-blur">
+    <header className="sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3 border-b border-stone-200 bg-white/90 px-6 py-3 backdrop-blur">
       <Breadcrumb />
       <div className="flex flex-wrap items-center gap-2">
         <Select
@@ -55,13 +55,13 @@ export function TopBar({ onOpenAlerts, alertCount }: { onOpenAlerts: () => void;
           onChange={(v) => setPeriodIndex(Number(v))}
           options={PERIODS.map((p, i) => ({ value: String(i), label: p }))}
         />
-        <div className="flex overflow-hidden rounded-lg border border-slate-200 text-sm font-semibold">
+        <div className="flex overflow-hidden rounded-lg border border-stone-200 text-sm font-semibold">
           {(["CAD", "USD"] as Currency[]).map((c) => (
             <button
               key={c}
               onClick={() => setCurrency(c)}
               className={`px-3 py-2 transition-colors ${
-                currency === c ? "bg-navy text-white" : "bg-white text-slate-500 hover:bg-slate-50"
+                currency === c ? "bg-navy text-white" : "bg-white text-stone-500 hover:bg-stone-50"
               }`}
             >
               {c}
@@ -70,7 +70,7 @@ export function TopBar({ onOpenAlerts, alertCount }: { onOpenAlerts: () => void;
         </div>
         <button
           onClick={onOpenAlerts}
-          className="relative rounded-lg border border-slate-200 bg-white p-2 text-slate-500 shadow-sm hover:bg-slate-50"
+          className="relative rounded-lg border border-stone-200 bg-white p-2 text-stone-500 shadow-sm hover:bg-stone-50"
           title="Alerts"
         >
           <Bell size={18} />
@@ -82,7 +82,7 @@ export function TopBar({ onOpenAlerts, alertCount }: { onOpenAlerts: () => void;
         </button>
         <button
           onClick={() => setPresentation(true)}
-          className="rounded-lg border border-slate-200 bg-white p-2 text-slate-500 shadow-sm hover:bg-slate-50"
+          className="rounded-lg border border-stone-200 bg-white p-2 text-stone-500 shadow-sm hover:bg-stone-50"
           title="Presentation mode"
         >
           <Presentation size={18} />

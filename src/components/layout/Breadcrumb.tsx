@@ -39,13 +39,13 @@ export function Breadcrumb() {
         const last = i === crumbs.length - 1;
         return (
           <span key={i} className="flex items-center gap-1.5">
-            {i > 0 && <ChevronRight size={14} className="text-slate-300" />}
+            {i > 0 && <ChevronRight size={14} className="text-stone-300" />}
             {c.to && !last ? (
-              <Link to={c.to} className="font-medium text-slate-500 hover:text-ecoflo">
+              <Link to={c.to} className="font-medium text-stone-500 hover:text-ecoflo">
                 {c.label}
               </Link>
             ) : (
-              <span className={last ? "font-semibold text-navy" : "text-slate-500"}>{c.label}</span>
+              <span className={last ? "font-semibold text-navy" : "text-stone-500"}>{c.label}</span>
             )}
           </span>
         );

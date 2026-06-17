@@ -14,7 +14,7 @@ export function AppLayout() {
 
   if (presentation) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-stone-50">
         <main className="mx-auto max-w-[1400px] px-8 py-8">
           <Outlet />
         </main>
@@ -30,7 +30,7 @@ export function AppLayout() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-stone-50">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar onOpenAlerts={() => setAlertsOpen(true)} alertCount={alertCount} />
