@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import { AppLayout } from "./components/layout/AppLayout";
+import { MobileGate } from "./components/MobileGate";
 import NetworkOverview from "./pages/NetworkOverview";
 import RegionView from "./pages/RegionView";
 import ServicePointScorecard from "./pages/ServicePointScorecard";
@@ -26,18 +27,20 @@ export default function App() {
     <AppProvider>
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<NetworkOverview />} />
-            <Route path="/region/:regionId" element={<RegionView />} />
-            <Route path="/sp/:spId" element={<ServicePointScorecard />} />
-            <Route path="/mix" element={<MixTracker />} />
-            <Route path="/field" element={<FieldEfficiency />} />
-            <Route path="/inventory" element={<Inventory />} />
-            <Route path="/reviews" element={<ReviewsCases />} />
-            <Route path="/benchmarking" element={<Benchmarking />} />
-          </Route>
-        </Routes>
+        <MobileGate>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<NetworkOverview />} />
+              <Route path="/region/:regionId" element={<RegionView />} />
+              <Route path="/sp/:spId" element={<ServicePointScorecard />} />
+              <Route path="/mix" element={<MixTracker />} />
+              <Route path="/field" element={<FieldEfficiency />} />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/reviews" element={<ReviewsCases />} />
+              <Route path="/benchmarking" element={<Benchmarking />} />
+            </Route>
+          </Routes>
+        </MobileGate>
       </BrowserRouter>
     </AppProvider>
   );
