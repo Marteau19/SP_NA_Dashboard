@@ -29,6 +29,22 @@ body {
   background: #a8a29e;
 }
 
+/* Boot splash: "live data" flowing along the network connection arcs. */
+.ecoflo-arc {
+  stroke-dasharray: 2 7;
+  animation: ecofloDash 1.1s linear infinite;
+}
+@keyframes ecofloDash {
+  to {
+    stroke-dashoffset: -36;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ecoflo-arc {
+    animation: none;
+  }
+}
+
 @media print {
   aside,
   header {

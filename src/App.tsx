@@ -1,8 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import { AppLayout } from "./components/layout/AppLayout";
 import { MobileGate } from "./components/MobileGate";
+import { BootSplash } from "./components/BootSplash";
 import NetworkOverview from "./pages/NetworkOverview";
 import RegionView from "./pages/RegionView";
 import ServicePointScorecard from "./pages/ServicePointScorecard";
@@ -22,9 +24,21 @@ function ScrollToTop() {
   return null;
 }
 
+// Show the boot splash only on the first load of a browser session, not on
+// every in-session reload or navigation.
+const SPLASH_KEY = "ecoflo-splash-shown";
+
 export default function App() {
+  const [booted, setBooted] = useState(() => sessionStorage.getItem(SPLASH_KEY) === "1");
+  const handleBooted = () => {
+    sessionStorage.setItem(SPLASH_KEY, "1");
+    setBooted(true);
+  };
   return (
     <AppProvider>
+      <AnimatePresence>
+        {!booted && <BootSplash onDone={handleBooted} />}
+      </AnimatePresence>
       <BrowserRouter>
         <ScrollToTop />
         <MobileGate>
