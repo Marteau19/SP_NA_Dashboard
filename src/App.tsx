@@ -24,12 +24,20 @@ function ScrollToTop() {
   return null;
 }
 
+// Show the boot splash only on the first load of a browser session, not on
+// every in-session reload or navigation.
+const SPLASH_KEY = "ecoflo-splash-shown";
+
 export default function App() {
-  const [booted, setBooted] = useState(false);
+  const [booted, setBooted] = useState(() => sessionStorage.getItem(SPLASH_KEY) === "1");
+  const handleBooted = () => {
+    sessionStorage.setItem(SPLASH_KEY, "1");
+    setBooted(true);
+  };
   return (
     <AppProvider>
       <AnimatePresence>
-        {!booted && <BootSplash onDone={() => setBooted(true)} />}
+        {!booted && <BootSplash onDone={handleBooted} />}
       </AnimatePresence>
       <BrowserRouter>
         <ScrollToTop />
