@@ -1,8 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AppProvider } from "./context/AppContext";
 import { AppLayout } from "./components/layout/AppLayout";
 import { MobileGate } from "./components/MobileGate";
+import { BootSplash } from "./components/BootSplash";
 import NetworkOverview from "./pages/NetworkOverview";
 import RegionView from "./pages/RegionView";
 import ServicePointScorecard from "./pages/ServicePointScorecard";
@@ -23,8 +25,12 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const [booted, setBooted] = useState(false);
   return (
     <AppProvider>
+      <AnimatePresence>
+        {!booted && <BootSplash onDone={() => setBooted(true)} />}
+      </AnimatePresence>
       <BrowserRouter>
         <ScrollToTop />
         <MobileGate>
